@@ -1,0 +1,19 @@
+﻿[
+    {
+        "id": "1",
+        "value": "Pending"
+    },
+    {
+        "id": "2",
+        "value": "Denied"
+    },
+    {
+        "id": "3",
+        "value": "Approved"
+    },
+     {
+        "id": "4",
+        "value": "Reimbursed"
+    }
+
+]

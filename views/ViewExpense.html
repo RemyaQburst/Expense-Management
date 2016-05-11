@@ -1,0 +1,143 @@
+﻿
+<div class="row">
+    <div class="col-md-6">
+        <h2>Claim #1</h2>
+    </div>
+    <div class="col-md-6" > <!--ng-show="detailsView"-->
+        <button type="button" class="btn btn-default pull-right">
+            <span class="glyphicon glyphicon-edit"></span> Edit
+        </button>
+    </div>
+</div>
+
+<div id="viewDiv" class="panel panel-default" > <!--ng-show="detailsView"-->
+    <div class="panel-body">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label class="control-label">Added By:</label>
+                    <label ng-model="addedPerson">John Joseph</label>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Category:</label>
+                    <label ng-model="addedPerson">A</label>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Date:</label>
+                    <label ng-model="addedPerson">12/06/2015</label>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Project:</label>
+                    <label ng-model="addedPerson">A2B</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label class="control-label">Amount Claimed:</label>
+                    <label ng-model="amountClaimed">100</label>
+                    <label ng-model="currencyType">$</label>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Client Reimbursement:</label>
+                    <label ng-model="addedPerson">Yes</label>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Status:</label>
+                    <label ng-model="addedPerson">Approved</label>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Invoice:</label>
+                    <img ng-src="/img/superbox/superbox-full-6.jpg" alt="bill" class="img-responsive" width="40" height="40" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editDiv" class="panel panel-default" ng-show="editView">
+    <div class="panel-body">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+
+                    <label class="control-label">Category:</label>
+                    <select ng-model="selectCategory" name="selectCategory" ng-options="">
+                        <option>Select...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Date:</label>
+                    <label ng-model="addedPerson">12/06/2015</label>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Project:</label>
+                    <select ng-model="selectProject" name="selectProject" ng-options="">
+                        <option>Select...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label class="control-label">Amount:</label>
+
+
+                    <input type="text" ng-modal="amount" name="amount" />
+
+                    <select ng-model="selectCurrency" name="selectCurrency" ng-options="">
+                        <option>Select...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label">Client Reimbursement:</label>
+                    <label>
+                        <input type="radio" name="clientReimbursement" value="Yes" ng-model="clientReimbursement" />Yes
+                    </label>
+                    <label>
+                        <input type="radio" name="clientReimbursement" value="No" ng-model="clientReimbursement" />NO
+                    </label>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="control-label">Invoice:</label>
+                    <input type="file" file-model="myFile" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <h2>History</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            Need more information
+        </div>
+    </div>
+</div>
+
+
+<div ng-show="editView">
+    <h2>Notes</h2>
+    <div class="form-group">
+        <textarea class="form-control" placeholder="Add notes here" rows="5" id="notes" style="resize:none"></textarea>
+    </div>
+</div>
+
