@@ -1,0 +1,290 @@
+﻿<div class="container" ng-controller="ViewExpenseController">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Claim #{{claimNum}}</h2>
+
+        </div>
+        
+         <div>
+            <button type="button" class="btn btn-default pull-right" ng-click="backToExpense()">
+                <span class="glyphicon glyphicon-backward"></span> Back
+            </button>
+        </div>
+        <div class="col-md-5" ng-show="editButton">
+            <button type="button" class="btn btn-default pull-right" ng-click="Edit()">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+            </button>
+
+        </div>
+
+        <div class="col-md-5 button-top" ng-hide="editButton">
+            <div ng-show="updateButton">
+                <button type="button" class="btn btn-default pull-right" ng-click="Save(files)">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                </button>
+            </div>
+            <div ng-show="cancelButton">
+                <button type="button" class="btn btn-default pull-right margin-btn" ng-click="Cancel()">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </button>
+
+            </div>
+        </div>
+        <div class="col-md-5" ng-show="backButton">
+            <button type="button" class="btn btn-default pull-right" ng-click="backToExpense()">
+                <span class="glyphicon glyphicon-backward"></span> Back
+            </button>
+
+        </div>
+    </div>
+    <div id="viewDiv" class="panel panel-default col-md-6" ng-show="detailsView">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Added By:</label>
+                        <label ng-bind="addedPerson"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Category:</label>
+                        <label ng-bind="category"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Date:</label>
+                        <label ng-bind="date"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Project:</label>
+                        <label ng-bind="project"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Description:</label>
+                        <label ng-bind="description"></label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Amount Claimed:</label>
+                        <label ng-bind="amountClaimed"></label>
+                        <label ng-bind="currencyType"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Client Reimbursement:</label>
+                        <label ng-bind="clientReimbursement"></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Approver:</label>
+                        <label ng-bind="approver"></label>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Status:</label>
+                        <label ng-show="approvalStatusFixedMode" ng-bind="approvalStatus"></label>
+                        <label ng-if="isApprover && isStatusApproved && editView" ng-bind="approvalStatus"></label>
+                        <!--<label ng-show="isApprover && isReimbursed" >Reimbursed</label>-->
+                        <select ng-if="isApprover && !isStatusApproved && !isReimbursed" ng-model="$parent.selectapprovalStatus" name="selectapprovalStatus" ng-options="option.value as option.value for option in status" ng-show="approvalStatusEditMode"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-5">Invoice:</label>
+                        <img data-ng-src="{{uploadedInvoice}}" alt="No File" class="img-responsive" width="100" height="100" ng-click="showImage('lg')" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="editDiv" class="panel panel-default col-md-6" ng-show="editViewNormalUser">
+        <form name="formEditNormalUser">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Category:</label>
+                            <select class="set-width" ng-model="selectCategory" name="selectCategory" ng-options="option.value as option.value for option in categories" required>
+                                <option value="">Select...</option>
+                            </select>
+                            <span ng-show="(formEditNormalUser.selectCategory.$invalid)" class="help-block"> <i class="fa fa-warning"></i>*</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Date:</label>
+                            <input type="text"
+                                   datepicker-popup="MM/dd/yyyy"
+                                   is-open="valuationDatePickerIsOpen"
+                                   ng-click="valuationDatePickerOpen()"
+                                   ng-model="valuationDate"
+                                   class="set-width" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Project:</label>
+                            <select ng-model="selectProject" name="selectProject" ng-options="option.value as option.value for option in projects" required>
+                                <option value="">Select...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Description:</label>
+                            <textarea id="description-normal" class="form-control" ng-model="descriptionEditNormal"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Amount:</label>
+
+                            <input type="text" class="set-width" ng-model="amount" name="amount" required />
+                            <select ng-model="selectCurrencyNormalUser" name="selectCurrencyNormalUser" ng-options="c.name as c.name for c in currencies"></select>
+                            <span ng-show="(formEditNormalUser.amount.$error.required)" class="help-block"> <i class="fa fa-warning"></i>*</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Client Reimbursement:</label>
+                            <input type="checkbox" ng-value="true" ng-model="clientReimbursementOption" style="float: left;" />
+                            <label class="col-md-2">
+                                Yes
+                            </label>
+                            <!-- <input type="radio" ng-value="false" ng-model="clientReimbursementOption" style="float: left;" />
+                            <label class="col-md-2">
+                                No
+                            </label> -->
+                            <span ng-show="(formEditNormalUser.clientReimbursementOption.$invalid && submitted)" class="help-block"> <i class="fa fa-warning"></i>*</span>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Invoice:</label>
+                            <img data-ng-src="{{uploadedInvoice}}" alt="bill" class="img-responsive" width="100" height="100" ng-click="showImage('lg')"/>
+                            <input id="pictures" type="file" ngf-select ng-model="files" name="file"
+                                   accept="image/*" ngf-max-size="2MB" ngf-keep="true" ngf-keep-distinct="true" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="editDivAdmin" class="panel panel-default col-md-6" ng-show="editViewAdmin">
+        <form name="formEditAdmin">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Category:</label>
+                            <select class="set-width" ng-model="selectCategory" name="selectCategory" ng-options="option.value as option.value for option in categories" required>
+                                <option value="">Select...</option>
+                            </select>
+                            <span ng-show="(formEditAdmin.selectCategory.$invalid)" class="help-block"> <i class="fa fa-warning"></i>*</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Date:</label>
+                            <label ng-model="date">12/06/2015</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Project:</label>
+                            <select class="set-width" ng-model="selectProject" name="selectProject" ng-options="option.value as option.value for option in projects">
+                                <option value="">Select...</option>
+                            </select>
+                        </div>
+                        <div class="form-group" ng-show="isAdmin">
+                            <label class="control-label col-md-5">On Behalf Of:</label>
+                            <!--<select ng-model="selectonBehalfOf" name="selectonBehalfOf" ng-options="option.FullName as option.FullName for option in onBehalfOf">
+                                <option value="">Select...</option>
+                            </select>-->
+                            <select class="set-width" name="selectonBehalfOf"
+                                    ng-model="selectonBehalfOf"
+                                    ng-options="user.Id as user.FullName for user in onBehalfOf" required>
+                                <option value="">Select...</option>
+                            </select>
+                            <span ng-show="(formEditAdmin.selectonBehalfOf.$error.required)" class="help-block"> <i class="fa fa-warning"></i>*</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Amount:</label>
+                            <input type="text" ng-model="amountAdmin" name="amountAdmin" required />
+                            <select ng-model="selectCurrencyAdmin" name="selectCurrencyAdmin" ng-options="c.name as c.name for c in currencies"></select>
+                            <span ng-show="(formEditAdmin.amountAdmin.$error.required)" class="help-block"> <i class="fa fa-warning"></i>*</span>
+
+                        </div>
+                        <div class="form-group" style="overflow: auto;">
+                            <label class="control-label col-md-5">Client Reimbursement:</label>
+                            <label class="col-md-2">
+                                <input type="checkbox" name="clientReimbursementAdmin" value="Yes" ng-model="clientReimbursementAdmin" style="float:left;" />Yes
+                            </label>
+                            <!-- <label class="col-md-2">
+                                <input type="radio" name="clientReimbursementAdmin" value="No" ng-model="clientReimbursementAdmin" style="float:left;" />NO
+                            </label> -->
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Status:</label>
+                            <label ng-show="isReimbursed" class="control-label col-md-5">Reimbursed</label>
+                            <select class="set-width" name="selectapprovalStatus"
+                                    ng-show="!isReimbursed"
+                                    ng-model="selectapprovalStatusAdmin"
+                                    ng-options="option.value as option.value for option in status">
+                                <option value="">Select...</option>
+
+                                <!--option.value for option in status track by option.id-->
+                            </select>
+                            <span ng-show="(formEditAdmin.selectapprovalStatus.$error.required)" class="help-block"> <i class="fa fa-warning"></i>*</span>
+                            <!--<select ng-model="selectapprovalStatusAdmin" name="selectapprovalStatus" ng-options="option.value as option.value for option in status"></select>-->
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Description:</label>
+                            <textarea class="form-control" style="width: 220px;" ng-model="descriptionEditAdmin"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-5">Invoice:</label>
+                            <img data-ng-src="{{uploadedInvoice}}" alt="bill" class="img-responsive" width="100" height="100" ng-click="showImage('lg')"/>
+                            <input id="pictures" type="file" ng-model="adminFile" name="file"
+                                   accept="image/*" ngf-max-size="2MB" ngf-keep="true" ngf-keep-distinct="true" />
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div ng-show="editView" class="col-md-6">
+        <h2 style="margin-top: 0px;">Notes</h2>
+        <div class="form-group">
+            <textarea class="form-control" placeholder="Add notes here" rows="5" id="notes" ng-model="notes"></textarea>
+        </div>
+
+    </div>
+
+    <div class="history_wrap col-md-6">
+        <h2>History</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div ng-repeat="history in expenseHistory" ng-show="history.Notes.length>1" class="form-group">
+                    <div class="control-label single_note col-md-12 col-sm-12">
+                        <p>
+                            {{history.Notes}}.
+                        </p>
+                        <i style="display: block; text-align: right; font-weight: 600;">
+                            - {{history.UpdatedByFullName}} on {{history.UpdatedOn}}. 
+                        </i>
+                        
+                    </div>
+                    <!-- <div ng-show="history.Notes.length<=1" class="control-label single_note col-md-12 col-sm-12">
+                        <i style="display: block; text-align: right; font-weight: 600;">
+                            - {{history.UpdatedByFullName}} on {{history.UpdatedOn}}. 
+                        </i>
+                        
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/ng-template" id="showInvoice.html">
+        <div >
+            
+                <img data-ng-src="{{uploadedInvoice}}" width="800" height="100" class="img-responsive" />
+           
+        </div>
+    </script>
+</div>
+
+

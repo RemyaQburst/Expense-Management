@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <div class="container" ng-controller="TestController">
+        <div height="50%" ng-show="isDefaultTableVisible">
+
+            <table class="table table-striped table-bordered table-hover" width="100%">
+                <thead>
+                    <tr>
+                        <td colspan="8">
+                            <div class='loading'>
+
+                                <h3 class='loading-title'>Loading...</h3>
+                                <div class="spinner">
+                                    <div class="double-bounce1"></div>
+                                    <div class="double-bounce2"></div>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+
+
+        </div>
+        <div height="50%" ng-show="!isDefaultTableVisible">
+            <!--<table datatable dt-options="dtOptions" dt-columns="dtColumns" ng-if="expenseList.length != 0">-->
+            <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" class="table table-striped table-bordered table-hover" width="100%">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th data-class="expand"> Category</th>
+                        <th> Project</th>
+                        <th ng-show="(isAdmin || isApprover)"> AddedBy</th>
+                        <th> Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th ng-show="(isAdmin || isApprover)">Change Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="expense in expenseList" ng-click="goToViewPage(expense,$index)">
+                        <td>{{expense.Id}}</td>
+                        <td>{{expense.Category}}</td>
+                        <td>{{expense.Project}}</td>
+                        <td ng-show="(isAdmin || isApprover)">{{expense.AddedBy}}</td>
+                        <td>{{expense.Date}}</td>
+                        <td>{{expense.Amount}}</td>
+                        <td>{{expense.Status}}</td>
+                        <td ng-show="(isAdmin || isApprover)">
+                            <select ng-options="stat for stat in expense.availableStatus" ng-model="expense.Status" ng-click="setSelectedStatus($event);">
+                                <option value="">Please Select</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+</body>
+</html>

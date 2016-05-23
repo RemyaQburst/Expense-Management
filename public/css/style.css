@@ -1,0 +1,201 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the
+ * later versions of this theme.
+ *
+ * We advise that you use use this CSS to override
+ * SmartAdmin styles.
+ *
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ *
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+/*Style for spinner*/
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #333;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    -webkit-animation: bounce 2.0s infinite ease-in-out;
+    animation: bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+
+    position: relative;
+    margin: 100px auto;
+}
+
+.loading{
+    text-align: center;
+    padding-top:40px;padding-bottom: 40px;
+}
+#main{
+      overflow-x: hidden;
+}
+
+@-webkit-keyframes bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+/*Style for spinner*/
+
+.uname{
+    font-size: 14px;
+    font-weight: 400;
+}
+.login-padding > span {
+    padding-top: 8px ; /*!important*/
+}
+.heading {
+    padding-bottom:10px;
+}
+#logo-group>span{
+    margin-top: 5px;
+}
+tr{
+	cursor: pointer;
+}
+.help-block{
+	color: #E40808;
+}
+.modal-title{
+	font-weight: bold;
+}
+#extr-page #header span#logo{
+    margin-top: 10px;
+}
+.modal-body .form-control{
+    margin-bottom: 15px;
+}
+@media (min-width: 1200px){
+.container {
+    width: 1114px;
+    margin-right:94px;
+}
+}
+.set-width{
+    width: 172px;
+}
+@media (min-width: 1200px){
+.container {
+    width: 98%;
+}
+}
+
+#pictures {
+    margin-top: 15px;
+    margin-left: 171px;
+    background-color: transparent;
+    border-color: lavender;
+}
+
+#description-normal{
+    width: 220px;
+}
+.margin-btn {
+    margin-left:5px;
+}
+.hide{
+    display:none;
+}
+/*.button-top{
+    padding-top:22px;
+}*/
+.tablePointer{
+
+cursor:pointer;
+}
+.app-modal-window .modal-dialog {
+  width: 500px;
+}
+
+.pending_color{
+    color:green;
+}
+
+.denied_color{
+    color:red;
+}
+
+.headerTitle{margin-left:250px; }
+#viewDiv .panel-body .form-group .control-label{
+	font-weight: bold;
+}
+.history_wrap h2{
+	margin-top: 0px;
+}
+tr th{
+	text-align: center;
+}
+tbody tr td{
+	text-align: center;
+}
+tbody tr td:nth-child(2), tbody tr td:nth-child(3), thead tr th:nth-child(2), thead tr th:nth-child(3){
+	text-align: left;
+}
+.modal-body .col-lg-6 label{
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+.button-top .btn{
+	margin-left: 20px;
+}
+table.dataTable thead th:not(:nth-child(5)){
+	pointer-events: none!important;
+    background: none!important;
+}
+.form-group{
+	overflow: auto;
+}
+.single_note{
+    min-height: 50px;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #DDD;
+}
+.demo{
+    display: none;
+}
+tbody tr td:nth-child(6){
+    text-align: right;
+}
+th:nth-child(6){
+    text-align: right;
+}
+.statusSelect{
+  cursor: pointer;
+}
+.statusSelect[disabled]{
+  color: #7e7e7e;
+  cursor: auto;
+}
