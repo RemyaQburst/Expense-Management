@@ -1,8 +1,10 @@
 // set up ======================================================================
 var express  = require('express');
 var app      = express(); 								// create our app w/ express
-var mongoose = require('mongoose'); 				// mongoose for mongodb
-
+var mongoose = require('mongoose'); 					// mongoose for mongodb			
+var fs = require("fs");
+var path = require('path'); 
+var multer = require('multer');
 var port = process.env.PORT || 8080;
 
 // configuration ===============================================================
@@ -13,6 +15,7 @@ app.configure(function() {
 	app.use(express.logger('dev')); 						// log every request to the console
 	app.use(express.bodyParser()); 							// pull information from html in POST
 	app.use(express.methodOverride()); 						// simulate DELETE and PUT
+	/*app.use(multer({dest:path.join(__dirname,'/public/uploads/')}));*/
 });
 
 	// application -------------------------------------------------------------
@@ -44,6 +47,29 @@ app.get('/api/save', function(req, res) {
 		});
 	});
 app.post('/api/save', function(req, res) {
+	console.log(req.body);
+	console.log(req.files.file.name);
+    console.log(req.files.file.path);
+    console.log(req.files.file.type);
+    var userID = req.body.Id;
+    app.use(multer({dest:path.join(__dirname,'/public/uploads/',userID)}));
+
+   	   var file = __dirname + "/public/uploads/" +userID+"/"+req.files.file.name;
+   	   console.log("fileObj",file);
+	   fs.readFile( req.files.file.path, function (err, data) {
+	        fs.writeFile(file, data, function (err) {
+	         if( err ){
+	              console.log( err );
+	         }else{
+	               response = {
+	                   message:'File uploaded successfully',
+	                   filename:req.files.file.name
+	              };
+	          }
+	          console.log( response );
+	          res.end( JSON.stringify( response ) );
+	       });
+	   });
 		exp.create({
 			Id : req.body.Id,
 			Amount : req.body.Amount,
@@ -95,8 +121,8 @@ app.put('/api/update/:expId', function(req, res) {
 app.put('/api/updateStatus/:expId', function(req, res) {
 	console.log(req.body);
 	exp.update({ Id : req.params.expId },{
-		ApprovalStatus : req.body.ApprovalStatus,
-		ApprovalStatusId : req.body.ApprovalStatusId
+		ApprovalStatus : req.body.value,
+		ApprovalStatusId : req.body.approvalStatusId
 	}, {safe:true}, function(err, expenses) {
 		if (err)
 			res.send(err)

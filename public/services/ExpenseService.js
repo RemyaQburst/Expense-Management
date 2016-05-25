@@ -55,8 +55,16 @@
 
             fb.child(expId).set(dataObj, onComplete);
             return deferred.promise;*/
-            console.log("file from server",expFiles);
-            dataObj.file = expFiles;
+
+
+
+
+            /*if (!angular.isUndefined(expFiles)) {
+                        Upload.base64DataUrl(expFiles).then(function (base64Urls) {
+                           dataObj.Invoice=base64Urls[0];
+                });
+            }
+            console.log("mydata",dataObj);
            return $http.post('/api/save', dataObj)
             .success(function(data) {
                console.log(data);
@@ -64,6 +72,25 @@
             .error(function(data) {
                 console.log('Error: ' + data);
             });
+*/    
+            var file = expFiles[0];
+            console.log("filetosave",file)
+            return Upload.upload({
+                url: '/api/save', //upload.php script, node.js route, etc..
+                method: 'POST', //Post or Put
+                headers: {'Content-Type': 'multipart/form-data'},
+                //withCredentials: true,
+                data: dataObj, //from data to send along with the file
+                file: file, // or list of files ($files) for html5 only             
+            }).success(function (response, status) {
+                   console.log(response);
+                   return response;
+                }
+            ).error(function (err) {
+                   console.log('Error: ' + err);
+                }
+            );
+
 
         }, getExpenseById: function (expId) {
             /*var ref = new Firebase(fibeBaseUrl + 'Expense');
@@ -94,6 +121,18 @@
             }
 
             return deferred.promise;*/
+            console.log("statusChange",status);
+            switch(status.value)
+                {
+                    case "Pending" : status.approvalStatusId = 1
+                    break;
+                    case "Denied" : status.approvalStatusId = 2
+                    break;
+                    case "Approved" : status.approvalStatusId = 3
+                    break;
+                    case "Reimbursed" : status.approvalStatusId = 4
+                    break;
+                }
             return $http.put('/api/updateStatus/'+ expId,status)
             .success(function(data) {
                return data;
@@ -109,7 +148,7 @@
             return $firebaseObject(fb.child(expenseID));*/
             var status = {};
             status.approvalStatusId = approvalStatusId,
-            status.approvalStatus = approvalStatus;
+            status.value = approvalStatus;
             return $http.put('/api/updateStatus/'+ expenseID,status)
             .success(function(data) {
                return data;
